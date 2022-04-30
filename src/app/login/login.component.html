@@ -1,0 +1,19 @@
+<div class="content text-center">
+    <div class="page_header padding-top">
+      <img src="../assets/iwe_logo.webp" />
+  
+      <h1 class="padding-top pageTitle">Log into the Back Office</h1>
+      
+        <form (ngSubmit)="doLogin(loginForm)" #loginForm="ngForm">
+            <div class="mb-3 field">
+              <input type="email" placeholder="Email address" name="email" class="form-control" [(ngModel)]="user.email" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3 field">
+              <input type="password" placeholder="Password" name="password" class="form-control"[(ngModel)]="user.password" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-primary" class="btn-login">Login</button>
+          </form>
+      </div>
+
+  </div>
+  
