@@ -1,30 +1,182 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" routerLink="#">IWE Back Office</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <a class="navbar-link" (click)="onOpenModal(null!,'add')">Add User<span class="sr-only"></span></a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" (click)="goToAbout()">About</a>
+            <form class="form-inline my-2 my-lg-0">
+              <input type="search" name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search users...">
+            </form>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+  
+  <div class="container" id="main-container">
+      <div class="row">
+          <div *ngFor="let user of users" class="col-md-6 col-xl-3">
+              <div class="card m-b-30">
+                  <div class="card-body row">
+                      <div class="col-6">
+                          <a href=""><img src="{{user?.imageUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
+                      </div>
+                      <div class="col-6 card-title align-self-center mb-0">
+                          <h5>{{user?.firstName}}</h5>
+                          <h6 class="m-0">{{user?.lastName}}</h6><br>
+                          <p class="m-0">{{user?.location}}</p>
+                      </div>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{user?.email}}<a href="#"></a></li>
+                      <li class="list-group-item">Role : {{user?.role}}</li>
+                  </ul>
+                  <div class="card-body ms-auto">
+                      <div class="float-right btn-group btn-group-sm ">
+                          <a (click)="onOpenModal(user,'edit')" class="btn btn-primary tooltips" data-placement="top" data-toggle="modal" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                          <a (click)="onOpenModal(user,'delete')" class="btn btn-secondary tooltips" data-placement="top" data-toggle="modal" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
 
 
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        Username
+<!-- Add user Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <div class="col">
-        Email
-      </div>
-      <div class="col">
-        Role
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="onAddUser(addForm)">
+          <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Last Name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" ngModel name="location" class="form-control" id="location" placeholder="Location" required>
+          </div>
+          <div class="form-group">
+            <label for="imageUrl">Image Url</label>
+            <input type="text" ngModel name="location" class="form-control" id="imageUrl" placeholder="Image" required>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="add-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Edit user Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateUserModalLabel">Edit User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input type="text" ngModel name="firstname" class="form-control" id="firstname" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="text" ngModel name="lastname" class="form-control" id="lastname" placeholder="Last Name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" ngModel name="location" class="form-control" id="location" placeholder="Location" required>
+          </div>
+          <div class="form-group">
+            <label for="imageUrl">Image Url</label>
+            <input type="text" ngModel name="location" class="form-control" id="imageUrl" placeholder="Image" required>
+          </div>
+          <div class="form-group">
+            <label for="role">User Role</label>
+            <input type="text" ngModel name="role" class="form-control" id="role" placeholder="Role" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- delete user Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure to delete user</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add user Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateUserModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div>

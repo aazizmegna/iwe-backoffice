@@ -1,4 +1,4 @@
-import { User } from './user';
+import { Account } from './account';
 import { Component, OnInit } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import { NgForm } from '@angular/forms';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  public user: User = new User()
+  public user: Account = new Account()
 
   constructor(public route: Router) { }
 
