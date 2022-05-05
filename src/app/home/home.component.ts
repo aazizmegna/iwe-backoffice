@@ -12,6 +12,8 @@ import { NgForm }   from '@angular/forms';
 export class HomeComponent implements OnInit {
 
   public users!: User[];
+  public editUser!: User;
+  public deleteUser!: User;
 
   constructor(private userService: UserService) {}
 
@@ -36,14 +38,16 @@ export class HomeComponent implements OnInit {
       (response: User) => {
         console.log(response);
         this.getUsers();
+        addForm.reset();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
+        addForm.reset();
       }
     );
   }
 
-  public onUpdateAddUser(user: User): void {
+  public onUpdateUser(user: User): void {
     this.userService.updateUser(user).subscribe(
       (response: User) => {
         console.log(response);
@@ -53,6 +57,35 @@ export class HomeComponent implements OnInit {
         alert(error.message);
       }
     );
+  }
+
+  public onDeleteUser(userId: number): void {
+    this.userService.deleteUser(userId).subscribe(
+      (response: void) => {
+        console.log(response);
+        this.getUsers();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public searchUsers(key: string): void{
+    const results: User[] = [];
+    for (const user of this.users){
+       if(user.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1
+       || user.lastName.toLowerCase().indexOf(key.toLowerCase()) !== -1
+       || user.email.toLowerCase().indexOf(key.toLowerCase()) !== -1
+       || user.location.toLowerCase().indexOf(key.toLowerCase()) !== -1
+       || user.role.toLowerCase().indexOf(key.toLowerCase()) !== -1){
+        results.push(user);
+       }
+    }
+    this.users = results;
+    if(results.length === 0 || !key){
+      this.getUsers();
+    }
   }
 
   public onOpenModal(user: User, mode: string): void {
@@ -65,9 +98,11 @@ export class HomeComponent implements OnInit {
       button.setAttribute('data-target','#addUserModal');
     }
     if(mode==='edit'){
+      this.editUser = user;
       button.setAttribute('data-target','#updateUserModal');
     }
     if(mode==='delete'){
+      this.deleteUser = user;
       button.setAttribute('data-target','#deleteUserModal');
     }
     container?.appendChild(button);
